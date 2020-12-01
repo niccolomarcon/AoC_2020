@@ -1,16 +1,15 @@
+from functools import reduce
 from itertools import product
 
 
-def solution(expense_report):
+def solution(expense_report, terms):
     set_er = set(expense_report)
-    partial_sums = list(product(expense_report, expense_report))
+    tuples = product(*[expense_report[:] for _ in range(terms - 1)])
 
-    assert len(set_er) == len(expense_report)  # -> all the numbers are unique
-
-    for a, b in partial_sums:
-        friend = 2020 - a - b
+    for tuple in tuples:
+        friend = 2020 - sum(tuple)
         if friend in set_er:
-            return a * b * friend
+            return reduce(lambda x, y: x * y, tuple) * friend
 
     raise ValueError
 
@@ -19,4 +18,4 @@ if __name__ == '__main__':
     with open('input.txt') as input_file:
         expense_report = [int(line) for line in input_file]
 
-    print(solution(expense_report))
+    print(solution(expense_report, 3))
