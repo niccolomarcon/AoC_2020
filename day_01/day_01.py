@@ -1,11 +1,16 @@
+from itertools import product
+
+
 def solution(expense_report):
     set_er = set(expense_report)
+    partial_sums = list(product(expense_report, expense_report))
+
     assert len(set_er) == len(expense_report)  # -> all the numbers are unique
 
-    for number in expense_report:
-        friend = 2020 - number
+    for a, b in partial_sums:
+        friend = 2020 - a - b
         if friend in set_er:
-            return friend * number
+            return a * b * friend
 
     raise ValueError
 
